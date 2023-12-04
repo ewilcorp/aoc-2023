@@ -9,3 +9,8 @@ Solve 2:
 ```ruby
 '<filename>'.aoc.map(&:parse_calibration_2).reduce(:+)
 ```
+
+
+## Testing
+
+Run `test.rb`

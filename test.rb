@@ -1,4 +1,8 @@
 load 'lib.rb'
-load './lib/solver.spec.rb'
+
+Dir.glob("lib/*.spec.rb").each do |f|
+  load f
+end
+
 
 SolverTest.new

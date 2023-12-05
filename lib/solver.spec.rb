@@ -1,13 +1,14 @@
 
 class Test
   def initialize
-    res = self
-            .methods
-            .filter { |m| m.start_with? 'test_'}
-            .map { |t| [t, self.send(t)] }
-            .delete_if(&:pop)
-
-    raise "Test errors #{res}" if res.length > 0
+    self
+      .methods
+      .filter { |m| m.start_with? 'test_'}
+      .map { |t| [t, self.send(t)] }
+      .delete_if(&:pop)
+      .then do |res|
+        raise "Test errors #{res}" if res.length > 0
+    end
   end
 end
 
@@ -16,12 +17,12 @@ class SolverTest < Test
     super
   end
 
-  def xtest_parse_calibration_1
+  def test_parse_calibration_1
     fixture = %w(1abc2 pqr3stu8vwx a1b2c3d4e5f treb7uchet)
     fixture.map(&:parse_calibration_1).reduce(:+).eql? 142
   end
 
-  def xtest_parse_calibration_2
+  def test_parse_calibration_2
     fixture = %w[two1nine eightwothree abcone2threexyz xtwone3four 4nineeightseven2 zoneight234 7pqrstsixteen pcg91vqrfpxxzzzoneightzt]
     fixture.map(&:parse_calibration_2).reduce(:+).eql? 379
   end

@@ -14,7 +14,7 @@ class String
   def parse_gems_1
     self.split(":").map(&:strip).run do |game, gem_sets|
       {
-        game[-1] => gem_sets.split(";").map.with_index do |gem_set, i|
+        game.split(" ").pop => gem_sets.split(";").map.with_index do |gem_set, i|
           { i => gem_set.split(",").map { |g| g = g.split(" "); { g[-1].to_sym => g[0] } } }
         end.reduce({}, :merge)
       }
@@ -43,7 +43,7 @@ class Hash
         memo.merge! v if memo[v.keys.pop].to_i < v.values.pop.to_i
         memo
       end.run do |k, v|
-        limits[k.to_sym].to_i > v.to_i ? nil : false
+        limits[k.to_sym].to_i >= v.to_i ? nil : false
       end.compact.length.eql?(0) ? game : nil
     end.compact.map(&:to_i)
   end

@@ -35,10 +35,11 @@ class SolverTest < Test
       "Game 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green"
     ]
 
-    puts fixture
+    fixture
       .map(&:parse_gems_1)
-      .tap {|a| puts a; puts a.is_a? Array; puts a.reduce({}, :merge)} # TODO reduce merge??
-      .map { |p| p.possible_games_1({red:12, blue:14, green:13}) }
+      .reduce({}, :merge)
+      .possible_games_1({red:12, blue:14, green:13})
       .reduce(:+)
+      .eql? 8
   end
 end

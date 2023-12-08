@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# Hacky ways for early puzzles
+
 class String
   def parse_calibration_1
     self.chars.map { |s| Integer s rescue nil }.compact.values_at(0, -1).rotate.map.with_index { |v, i| v * 10.pow(i) }.sum
@@ -50,21 +52,28 @@ class Hash
 end
 
 class Array
-  def run
-    yield *self
-  end
-end
-
-class Hash
-  def run
-    self.map do |k, v|
-      yield k, v
+  def parse_seed_location_1
+    self.map(&:strip).delete_if(&:empty?).then do |data|
+      throw Error if data.length.eql?(0)
+      seeds = data.shift.split(" ").map { |v| Integer v rescue nil}.compact
+      maps = []
+      data.each do |line|
+        unless line[0].is_digit?
+          from, to = line.split(" ")[0].split("-to-")
+          map = {}
+          map[:from] = from
+          map[:to] = to
+          map[:map] = []
+          maps.push map
+          next
+        end
+        m = maps[-1]
+        next if m.nil?
+        m[:map].push line.split(" ").map(&:to_i)
+      end
+      maps.push({seeds: seeds})
+      maps
     end
   end
 end
 
-class NilClass
-  def values
-    []
-  end
-end

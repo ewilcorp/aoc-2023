@@ -65,4 +65,15 @@ end
 
 class String
   include Numbers
+
+  def is_digit?
+    self.ord >= 48 && self.ord <= 57
+  end
 end
+
+class Integer
+  def within?(start, range)
+    self >= start && self <= start + range - 1
+  end
+end
+

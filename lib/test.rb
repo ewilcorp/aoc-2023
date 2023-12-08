@@ -13,12 +13,12 @@ class Test
   end
 
   def benchmarked(method)
-    ret = nil
+    pass = false
     time = Benchmark.measure(method) do
-      ret = self.send(method) rescue false
+      pass = self.send(method) rescue false
     end
     print "#{self.class}::#{method} finished in #{time.format("%r")}s\n"
-    ret
+    pass
   end
 
   def expect(*args)

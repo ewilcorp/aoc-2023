@@ -20,14 +20,6 @@ class NumberRange
     other.cover? self
   end
 
-  def overlap_front?(other)
-    self.range.include? other.end
-  end
-
-  def overlap_back?(other)
-    self.range.include? other.start
-  end
-
   def start
     self.range.min
   end

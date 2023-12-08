@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# Hacky ways for early puzzles
+# Hacky hacks and stuff
 
 class String
   def parse_calibration_1
@@ -49,30 +49,33 @@ class Hash
       end.compact.length.eql?(0) ? game : nil
     end.compact.map(&:to_i)
   end
+
+  def to_5_2
+    self[:seeds] = self[:seeds].to_pairs.map { |pair| NumberRange.new *pair }
+    self
+  end
 end
 
 class Array
-  def parse_seed_location_1
+
+  def parse_5_1
     self.map(&:strip).delete_if(&:empty?).then do |data|
-      throw Error if data.length.eql?(0)
-      seeds = data.shift.split(" ").map { |v| Integer v rescue nil}.compact
+      seeds = data.shift.and.split(" ").map { |v| Integer v rescue nil}.compact
       maps = []
       data.each do |line|
         unless line[0].is_digit?
-          from, to = line.split(" ")[0].split("-to-")
-          map = {}
-          map[:from] = from
-          map[:to] = to
-          map[:map] = []
-          maps.push map
+          from, to = line.split(" ").first.split("-to-")
+          maps.push({ from: from, to: to, maps: [] })
           next
         end
-        m = maps[-1]
-        next if m.nil?
-        m[:map].push line.split(" ").map(&:to_i)
+        next if maps[-1].nil?
+        maps[-1][:maps].push NumberRangeMap.new(*line.split(" ").map(&:to_i))
       end
-      maps.push({seeds: seeds})
-      maps
+
+      {
+        seeds: seeds,
+        maps: maps
+      }
     end
   end
 end

@@ -6,8 +6,8 @@ class NumberRange
     self.init(start, length)
   end
 
-  def shift_to!(start)
-    self.init(start, self.length)
+  def shift_to!(new, old)
+    self.init(new + (self.start - old), self.length)
     self
   end
 
